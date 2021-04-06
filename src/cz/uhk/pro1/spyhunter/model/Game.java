@@ -1,5 +1,7 @@
 package cz.uhk.pro1.spyhunter.model;
 
+import java.awt.*;
+
 public class Game {
     private Tile[][] tiles;
     private int score;
@@ -36,4 +38,17 @@ public class Game {
             System.out.println();
         }
     }
+
+    public void draw(Graphics g) {
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[i].length; j++) {
+
+                int x = j*Tile.SIZE;
+                int y = i*Tile.SIZE;
+                Tile tile = tiles[i][j];
+                tile.draw(g, x,y);
+            }
+        }
+    }
+
 }
