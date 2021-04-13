@@ -7,6 +7,7 @@ public class BonusTile implements Tile {
     // vime, ze ma pridat 100 bodu do score
     @Override
     public void action(Game g) {
+        System.out.println("Sezrali jsme bonus");
         g.setScore(g.getScore() +50);
     }
 

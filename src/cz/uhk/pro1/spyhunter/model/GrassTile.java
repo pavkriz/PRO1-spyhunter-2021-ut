@@ -5,6 +5,7 @@ import java.awt.*;
 public class GrassTile implements Tile {
     @Override
     public void action(Game g) {
+        System.out.println("Narazili jsme");
         g.setIsDead(true);
     }
 

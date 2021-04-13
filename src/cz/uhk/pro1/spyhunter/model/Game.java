@@ -1,5 +1,6 @@
 package cz.uhk.pro1.spyhunter.model;
 
+import javax.sound.midi.Receiver;
 import java.awt.*;
 
 public class Game {
@@ -7,6 +8,7 @@ public class Game {
     private int score;
     private boolean isDead;
     private int elapsedTime;
+    private Car player = new Car();
 
     public int getScore()
     {
@@ -52,8 +54,14 @@ public class Game {
                 int y = elapsedTime - i*Tile.SIZE + canvasHeight;
                 Tile tile = tiles[i % tiles.length][j];
                 tile.draw(g, x, y);
+                // otestujeme, jestli auto nekoliduje s dlazdici
+                Rectangle tilerect = new Rectangle(x,y,Tile.SIZE,Tile.SIZE);
+                if(player.testCollision(tilerect)){
+                    tile.action(this);
+                }
             }
         }
+        player.draw(g);
     }
 
     /**
@@ -63,5 +71,15 @@ public class Game {
     public void update() {
         elapsedTime+= 1;
         //elapsedTime = 5;
+        if(this.isDead){
+            elapsedTime = 0;
+        }
+    }
+
+    public void rideLeft(){
+        player.move(-2);
+    }
+    public void rideRight(){
+        player.move(2);
     }
 }

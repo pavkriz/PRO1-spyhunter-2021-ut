@@ -4,12 +4,15 @@ import cz.uhk.pro1.spyhunter.model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Date;
 
 
 public class MainWindow extends JFrame {
     private final Game game = new Game();
-    private final Timer timer = new Timer(100, e -> tick());
+    private final Timer timer = new Timer(20, e -> tick());
     private final JPanel gamePanel = new GamePanel();
 
     class GamePanel extends JPanel {
@@ -25,13 +28,24 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         setTitle("Spy Hunter");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(300, 300));
-        pack();
         //p.setBackground(Color.BLACK);
         add(gamePanel, BorderLayout.CENTER);
         gamePanel.setDoubleBuffered(true); // potencialne plynulejsi animace
+        gamePanel.setPreferredSize(new Dimension(300, 300));
         prepareGame();
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    game.rideLeft();
+                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    game.rideRight();
+                }
+            }
+        });
+
         timer.start();
+        pack();
     }
 
     private void tick() {
