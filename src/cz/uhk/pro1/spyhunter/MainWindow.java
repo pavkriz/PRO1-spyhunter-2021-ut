@@ -8,12 +8,14 @@ import java.util.Date;
 
 
 public class MainWindow extends JFrame {
-    private Game game = new Game();
+    private final Game game = new Game();
+    private final Timer timer = new Timer(100, e -> tick());
+    private final JPanel gamePanel = new GamePanel();
 
     class GamePanel extends JPanel {
         @Override
         public void paint(Graphics g) {
-            System.out.println(new Date()+" paint");
+            //System.out.println(new Date()+" paint");
             super.paint(g);
             //g.drawLine(0,0, 100, 200);
             game.draw(g);
@@ -25,11 +27,22 @@ public class MainWindow extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(300, 300));
         pack();
-        JPanel p = new GamePanel();
         //p.setBackground(Color.BLACK);
-        add(p, BorderLayout.CENTER);
-
+        add(gamePanel, BorderLayout.CENTER);
+        gamePanel.setDoubleBuffered(true); // potencialne plynulejsi animace
         prepareGame();
+        timer.start();
+    }
+
+    private void tick() {
+        //System.out.println(new Date()+" tick!");
+        // zmenime herni stav (posuneme mapu, pohneme autem, aktualizovat skore, detekovat kolize)
+        game.update();
+        // vyvolame prekresleni herni plochy na JPanelu
+        gamePanel.repaint();
+        // kvuli lagovani v Linuxu: Synchronizes this toolkit's graphics state. Some window systems may do buffering
+        // of graphics events. This method ensures that the display is up-to-date. It is useful for animation.
+        Toolkit.getDefaultToolkit().sync();
     }
 
     private void prepareGame() {

@@ -6,6 +6,7 @@ public class Game {
     private Tile[][] tiles;
     private int score;
     private boolean isDead;
+    private int elapsedTime;
 
     public int getScore()
     {
@@ -40,15 +41,27 @@ public class Game {
     }
 
     public void draw(Graphics g) {
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles[i].length; j++) {
-
+        int canvasHeight = 300;
+        for (int i = elapsedTime/Tile.SIZE; i < canvasHeight/Tile.SIZE + elapsedTime/Tile.SIZE + 2; i++) {
+            for (int j = 0; j < tiles[i % tiles.length].length; j++) {
                 int x = j*Tile.SIZE;
-                int y = i*Tile.SIZE;
-                Tile tile = tiles[i][j];
-                tile.draw(g, x,y);
+                // +elapsedTime posunout silnici DOLU podle toho, jak ubiha cas
+                // -i*Tile.SIZE nove dlazdice kreslit "pred" (nahoru "do minusu") stavajici
+                // +canvasHeight zacit o celou vysku "okna" niz
+                // pozn: kresli sachovnici vzhuru nohama
+                int y = elapsedTime - i*Tile.SIZE + canvasHeight;
+                Tile tile = tiles[i % tiles.length][j];
+                tile.draw(g, x, y);
             }
         }
     }
 
+    /**
+     * Zaktualizuje herni stav (posuneme mapu, pohneme autem, aktualizovat skore, detekovat kolize)
+     * Je volano casovacem kazdych x milisekund
+     */
+    public void update() {
+        elapsedTime+= 1;
+        //elapsedTime = 5;
+    }
 }
