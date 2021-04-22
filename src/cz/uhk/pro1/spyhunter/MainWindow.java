@@ -1,6 +1,7 @@
 package cz.uhk.pro1.spyhunter;
 
 import cz.uhk.pro1.spyhunter.model.*;
+import cz.uhk.pro1.spyhunter.service.CsvMapLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +12,7 @@ import java.util.Date;
 
 
 public class MainWindow extends JFrame {
-    private final Game game = new Game();
+    private Game game = new Game();
     private final Timer timer = new Timer(20, e -> tick());
     private final JPanel gamePanel = new GamePanel();
 
@@ -61,24 +62,26 @@ public class MainWindow extends JFrame {
 
     private void prepareGame() {
         // vyrobime pole s dlazdicemi a naplnime ho ruznymi druhy dlazdic
-        Tile[][] tiles = new Tile[20][30];
-        for (int row=0; row<tiles.length; row++)
-        {
-            for (int col=0; col<tiles[row].length;col++)
-            {
-                if (col==0 || col == tiles[row].length-1)
-                {
-                    tiles[row][col] = new GrassTile();
-                }
-                else {
-                    tiles[row][col] = new RoadTile();
-                }
-            }
-        }
-        tiles[5][5] = new BonusTile();
-        game.setTiles(tiles);
-        // pro kontrolu si pole "vypiseme"
-        game.dumpTiles();
+//        Tile[][] tiles = new Tile[20][30];
+//        for (int row=0; row<tiles.length; row++)
+//        {
+//            for (int col=0; col<tiles[row].length;col++)
+//            {
+//                if (col==0 || col == tiles[row].length-1)
+//                {
+//                    tiles[row][col] = new GrassTile();
+//                }
+//                else {
+//                    tiles[row][col] = new RoadTile();
+//                }
+//            }
+//        }
+//        tiles[5][5] = new BonusTile();
+//        game.setTiles(tiles);
+//        // pro kontrolu si pole "vypiseme"
+//        game.dumpTiles();
+        CsvMapLoader l = new CsvMapLoader();
+        game = l.loadMap();
     }
 
     public static void main(String[] args) {
