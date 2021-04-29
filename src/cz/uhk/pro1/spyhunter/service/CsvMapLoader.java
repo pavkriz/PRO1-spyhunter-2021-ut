@@ -70,6 +70,7 @@ public class CsvMapLoader {
                             break;
                         case "@":
                             tempTile = new BonusTile();
+                            ((BonusTile)tempTile).setBonusTilePoints(bonusTilePoints);
                             break;
                         default:
                             tempTile = new RoadTile();

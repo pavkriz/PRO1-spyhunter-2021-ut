@@ -59,8 +59,15 @@ public class Game {
                 if(player.testCollision(tilerect)){
                     tile.action(this);
                 }
+                if (i == canvasHeight/Tile.SIZE + elapsedTime/Tile.SIZE + 2 - 1) {
+                    // kreslim prvni (horni) radek sachovnice
+                    // reaktiovovat pripadne bonusy
+                    tile.reactivate();
+                }
             }
         }
+        g.setColor(Color.white);
+        g.drawString("Score: " + score, 10, 10);
         player.draw(g);
     }
 
@@ -69,10 +76,9 @@ public class Game {
      * Je volano casovacem kazdych x milisekund
      */
     public void update() {
-        elapsedTime+= 1;
         //elapsedTime = 5;
-        if(this.isDead){
-            elapsedTime = 0;
+        if(!this.isDead){
+            elapsedTime+= 1;
         }
     }
 

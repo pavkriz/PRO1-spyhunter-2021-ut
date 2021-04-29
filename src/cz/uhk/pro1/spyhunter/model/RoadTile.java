@@ -16,6 +16,11 @@ public class RoadTile implements Tile {
     }
 
     @Override
+    public void reactivate() {
+        // nic nedelame
+    }
+
+    @Override
     public String toString() {
         return " ";
     }
