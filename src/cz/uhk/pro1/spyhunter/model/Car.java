@@ -12,17 +12,14 @@ public class Car {
     private int y;
     private Image image;
 
-    public Car()
+    public Car(int x, int y, Image img)
     {
-        x = 150;
-        y = 200;
-        try {
-            image = ImageIO.read(new URL("https://lide.uhk.cz/fim/ucitel/krizpa1/pro2/spyhunter/car2.png"));
-            width = image.getWidth(null);
-            height = image.getHeight(null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.x = x;
+        this.y = y;
+        //image = ImageIO.read(new URL("https://lide.uhk.cz/fim/ucitel/krizpa1/pro2/spyhunter/car2.png"));
+        image = img;
+        width = image.getWidth(null);
+        height = image.getHeight(null);
     }
 
     public void move(int dx)

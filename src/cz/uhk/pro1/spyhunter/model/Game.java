@@ -6,14 +6,22 @@ import java.awt.*;
 public class Game {
     private Tile[][] tiles;
     private int score;
+    private int width;
+    private int height;
     private boolean isDead;
     private int elapsedTime;
-    private Car player = new Car();
+    private Car player;
+    private int tileSize;
 
+    public void setTileSize(int tileSize){this.tileSize=tileSize;}
     public int getScore()
     {
         return score;
     }
+    public void setWidth(int width) { this.width = width;}
+    public int getWidth() {return width;}
+    public void setHeight(int height) { this.height = height;}
+    public int getHeight() {return height;}
     public void setScore(int score)
     {
         this.score = score;
@@ -26,6 +34,10 @@ public class Game {
     {
         this.isDead = isDead;
     }
+    public void setPlayer(Car player){
+        this.player = player;
+    }
+
     public Tile[][] getTiles()
     {
         return tiles;
@@ -43,23 +55,23 @@ public class Game {
     }
 
     public void draw(Graphics g) {
-        int canvasHeight = 300;
-        for (int i = elapsedTime/Tile.SIZE; i < canvasHeight/Tile.SIZE + elapsedTime/Tile.SIZE + 2; i++) {
+        int canvasHeight = height;
+        for (int i = elapsedTime/tileSize; i < canvasHeight/tileSize + elapsedTime/tileSize + 2; i++) {
             for (int j = 0; j < tiles[i % tiles.length].length; j++) {
-                int x = j*Tile.SIZE;
+                int x = j*tileSize;
                 // +elapsedTime posunout silnici DOLU podle toho, jak ubiha cas
-                // -i*Tile.SIZE nove dlazdice kreslit "pred" (nahoru "do minusu") stavajici
+                // -i*tileSize nove dlazdice kreslit "pred" (nahoru "do minusu") stavajici
                 // +canvasHeight zacit o celou vysku "okna" niz
                 // pozn: kresli sachovnici vzhuru nohama
-                int y = elapsedTime - i*Tile.SIZE + canvasHeight;
+                int y = elapsedTime - i*tileSize + canvasHeight;
                 Tile tile = tiles[i % tiles.length][j];
-                tile.draw(g, x, y);
+                tile.draw(g, x, y,tileSize);
                 // otestujeme, jestli auto nekoliduje s dlazdici
-                Rectangle tilerect = new Rectangle(x,y,Tile.SIZE,Tile.SIZE);
+                Rectangle tilerect = new Rectangle(x,y,tileSize,tileSize);
                 if(player.testCollision(tilerect)){
                     tile.action(this);
                 }
-                if (i == canvasHeight/Tile.SIZE + elapsedTime/Tile.SIZE + 2 - 1) {
+                if (i == canvasHeight/tileSize + elapsedTime/tileSize + 2 - 1) {
                     // kreslim prvni (horni) radek sachovnice
                     // reaktiovovat pripadne bonusy
                     tile.reactivate();

@@ -22,13 +22,13 @@ public class BonusTile implements Tile {
     }
 
     @Override
-    public void draw(Graphics g, int x, int y) {
+    public void draw(Graphics g, int x, int y, int tileSize) {
         if (!isActive){
             g.setColor(Color.BLACK);
         }else {
             g.setColor(Color.YELLOW);
         }
-            g.fillRect(x, y, Tile.SIZE, Tile.SIZE);
+            g.fillRect(x, y, tileSize, tileSize);
 
     }
 

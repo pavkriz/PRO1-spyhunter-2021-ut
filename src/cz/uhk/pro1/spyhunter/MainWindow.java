@@ -12,7 +12,7 @@ import java.util.Date;
 
 
 public class MainWindow extends JFrame {
-    private Game game = new Game();
+    private Game game;
     private final Timer timer = new Timer(20, e -> tick());
     private final JPanel gamePanel = new GamePanel();
 
@@ -32,8 +32,8 @@ public class MainWindow extends JFrame {
         //p.setBackground(Color.BLACK);
         add(gamePanel, BorderLayout.CENTER);
         gamePanel.setDoubleBuffered(true); // potencialne plynulejsi animace
-        gamePanel.setPreferredSize(new Dimension(300, 300));
         prepareGame();
+        gamePanel.setPreferredSize(new Dimension(game.getWidth(), game.getHeight()));
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {

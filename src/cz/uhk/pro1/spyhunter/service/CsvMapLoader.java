@@ -1,18 +1,18 @@
 package cz.uhk.pro1.spyhunter.service;
 
-import cz.uhk.pro1.spyhunter.model.Game;
-import cz.uhk.pro1.spyhunter.model.Tile;
+import cz.uhk.pro1.spyhunter.model.*;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import cz.uhk.pro1.spyhunter.model.BonusTile;
+
 import cz.uhk.pro1.spyhunter.model.Game;
-import cz.uhk.pro1.spyhunter.model.GrassTile;
-import cz.uhk.pro1.spyhunter.model.RoadTile;
 import cz.uhk.pro1.spyhunter.model.Tile;
 
+import javax.imageio.ImageIO;
+import java.net.URL;
 import java.util.StringTokenizer;
 
 public class CsvMapLoader {
@@ -53,6 +53,10 @@ public class CsvMapLoader {
             line = br.readLine();
             String urlBonusTile = line.split(";")[0];
 
+            Image roadImg = ImageIO.read(new URL(urlRoad));
+            Image grassImg = ImageIO.read(new URL(urlGrass));
+            Image bonusImg = ImageIO.read(new URL(urlBonusTile));
+
             Tile[][] tiles = new Tile[rows][cols];
 
             for(int i = 0; i < rows; i++){
@@ -63,33 +67,35 @@ public class CsvMapLoader {
 
                     switch (mapCols[j]) {
                         case "#":
-                            tempTile = new GrassTile();
+                            tempTile = new GrassTile(grassImg);
                             break;
                         case "":
-                            tempTile = new RoadTile();
+                            tempTile = new RoadTile(roadImg);
                             break;
                         case "@":
                             tempTile = new BonusTile();
                             ((BonusTile)tempTile).setBonusTilePoints(bonusTilePoints);
                             break;
                         default:
-                            tempTile = new RoadTile();
-                            break;
+                            throw new RuntimeException("Unknown symbol in map CSV: " + mapCols[j]);
                     }
 
                     tiles[i][j] = tempTile;
 
                 }
             }
+            Image carImg = ImageIO.read(new URL(urlCar));
 
             generatedGame.setTiles(tiles);
-
+            generatedGame.setPlayer(new Car(startPositionX, startPositionY, carImg));
+            generatedGame.setHeight(windowsHeight);
+            generatedGame.setWidth(windowWidth);
+            generatedGame.setTileSize(tileSize);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return generatedGame;
     }
 }
